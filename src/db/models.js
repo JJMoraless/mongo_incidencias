@@ -1,5 +1,4 @@
 import db from "./config.js";
-
 await db.createCollection("trainers", {
   validator: {
     $jsonSchema: {
@@ -168,3 +167,31 @@ await db.createCollection("campers", {
     },
   },
 });
+
+import db from "./config.js";
+await db.createCollection("users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["username", "email", "password"],
+      properties: {
+        username: {
+          bsonType: "string",
+          description: "Debe ser una cadena y es obligatorio.",
+        },
+        email: {
+          bsonType: "string",
+          description: "Debe ser una cadena y es obligatorio.",
+        },
+        password: {
+          bsonType: "string",
+          description: "Debe ser una cadena y es obligatorio.",
+        },
+      },
+    },
+  },
+});
+
+import db from "./config.js";
+const User = db.collection("users");
+User.createIndex({ email: 1 }, { unique: true });
