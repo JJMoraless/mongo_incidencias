@@ -8,7 +8,7 @@ const Catategoria = db.collection("categoria_insidencia");
 
 export const insidenciasPost = async (req = request, res = response) => {
   try {
-    const { tipo, categoria, id_salon, ...insidenciaRest } = req.body;
+    const { tipo, categoria, salon_id, ...insidenciaRest } = req.body;
     const tipoFound = await Tipo.findOne({ nombre: tipo });
     if (!tipoFound) {
       return res
@@ -25,10 +25,41 @@ export const insidenciasPost = async (req = request, res = response) => {
       tipo,
       categoria,
       ...insidenciaRest,
-      salon_id: new ObjectId(id_salon),
+      salon_id: new ObjectId(salon_id),
     });
 
-    res.status(200).json({ ok: true, insidencia: incidenciaInsert });
+    const [incidencia] = await Incidencia.aggregate([
+      {
+        $match: { _id: incidenciaInsert.insertedId },
+      },
+      {
+        $lookup: {
+          from: "salones",
+          localField: "salon_id",
+          foreignField: "_id",
+          as: "salon",
+        },
+      },
+      {
+        $unwind: "$salon",
+      },
+      {
+        $lookup: {
+          from: "areas",
+          localField: "salon.area_id",
+          foreignField: "_id",
+          as: "area",
+        },
+      },
+      {
+        $project: { "salon.equipos": 0, "salon._id": 0, "area._id": 0 },
+      },
+      {
+        $unwind: "$area",
+      },
+    ]).toArray();
+
+    res.status(200).json({ ok: true, incidencia });
   } catch (error) {
     console.log(
       "🚀 ~ file: trainers.controller.js:11 ~ trainerGet ~ error:",
