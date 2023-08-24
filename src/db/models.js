@@ -118,13 +118,11 @@ await db.createCollection("incidencias", {
         },
         categoria: {
           bsonType: "string",
-          enum: ["leve", "moderada", "grave"],
           description: "la categoria es obligatoria y es un string",
         },
         tipo: {
           bsonType: "string",
           description: "el tipo es obligatorio y es un string",
-          enum: ["software", "hardware"],
         },
         fecha_reporte: {
           bsonType: ["date", "string"],
