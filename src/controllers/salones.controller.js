@@ -27,3 +27,16 @@ export const pushEquiposToSalon = async (req = request, res = response) => {
     res.status(500).json({ ok: false, msg: error });
   }
 };
+
+export const getSalones = async (req = request, res = response) => {
+  try {
+    const salones = await Salon.find().toArray();
+    res.status(200).json({ ok: true, salones });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: trainers.controller.js:11 ~ trainerGet ~ error:",
+      error
+    );
+    res.status(500).json({ ok: false, msg: error });
+  }
+};

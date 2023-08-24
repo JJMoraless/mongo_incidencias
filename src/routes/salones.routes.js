@@ -1,7 +1,12 @@
 import { Router } from "express";
-import { pushEquiposToSalon } from "../controllers/salones.controller.js";
+import {
+  getSalones,
+  pushEquiposToSalon,
+} from "../controllers/salones.controller.js";
 
 const router = Router();
+router.get("/", getSalones);
+
 router.post("/:id", pushEquiposToSalon);
 
 export { router };
