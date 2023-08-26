@@ -5,6 +5,7 @@ const Categoria = db.collection("categoria_insidencia");
 const Tipo = db.collection("tipo_insidencia");
 const Salon = db.collection("salones");
 const Trainer = db.collection("trainers");
+const Role = db.collection("roles");
 
 export const emailExiste = async (correo = "", helpers) => {
   const existeEmail = await User.findOne({ correo });
@@ -50,4 +51,10 @@ export const existeEmailCorporativoTrainer = async (email = "", helpers) => {
   const existe = await Trainer.findOne({ emailCorporativo: email });
   if (existe) return helpers.message("email ya registrado");
   return email;
+};
+
+export const roleExiste = async (name = "", helpers) => {
+  const role = await Role.findOne({ name });
+  if (!role) return helpers.message("email ya registrado");
+  return name;
 };
