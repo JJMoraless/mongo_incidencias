@@ -11,7 +11,7 @@ export const trainerPost = async (req = request, res = response) => {
       salon_id: new ObjectId(salon_id),
       ...trainerRest,
     });
-
+    
     res.status(200).json({ ok: true, insert: trainerInsert });
   } catch (error) {
     console.log(
