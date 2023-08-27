@@ -1,4 +1,5 @@
 import { Router } from "express";
+import passport from "passport";
 import {
   getSalones,
   pushEquiposToSalon,
@@ -6,9 +7,15 @@ import {
 
 import { validatorHandler } from "../middlewares/validateShemas.js";
 import { getSalonShema, putEquipoShema } from "../shemas/salonesShema.js";
+import { checkRoles } from "../middlewares/auth.middleware.js";
 
 const router = Router();
-router.get("/", getSalones);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  checkRoles("admin", "user_role"),
+  getSalones
+);
 
 router.put(
   "/:id",
