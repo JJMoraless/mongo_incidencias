@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { existeEmailUser } from "../utils/dbValidators.js";
 
 const username = Joi.string()
   .min(5)
@@ -14,7 +15,7 @@ const password = Joi.string()
 
 export const postUserShema = Joi.object({
   username: username.required(),
-  email: email.required(),
+  email: email.required().external(existeEmailUser),
   password: password.required(),
 });
 
