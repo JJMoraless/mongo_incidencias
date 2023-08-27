@@ -53,8 +53,8 @@ export const existeEmailCorporativoTrainer = async (email = "", helpers) => {
   return email;
 };
 
-export const roleExiste = async (name = "", helpers) => {
-  const role = await Role.findOne({ name });
-  if (!role) return helpers.message("email ya registrado");
-  return name;
+export const existeEmailUser = async (email = "", helpers) => {
+  const existe = await User.findOne({ email });
+  if (existe) return helpers.message("email ya registrado");
+  return email;
 };
