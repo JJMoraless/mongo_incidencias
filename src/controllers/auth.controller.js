@@ -1,23 +1,14 @@
 import { request, response } from "express";
 import { createToken } from "../utils/jwt.js";
-import db from "../db/config.js";
-const User = db.collection("users");
+// import { createToken } from "../utils/jwt.js";
 
 export const login = async (req = request, res = response) => {
   try {
-    const { email, password } = req.body;
-    const userFound = await User.findOne({ email });
-    
-    if (!userFound) {
-      return res.status(404).json({ message: "credenciales incorrectas" });
-    }
-    
-
-    const token = await createToken(1);
-    res.cookie("token", token);
-    res.status(200).json({ message: "autenticado correctamete", token });
+    const { user } = req;
+    const token = await createToken({ sub: user._id, role: user.role });
+    res.json({ ok: true, token, user });
   } catch (error) {
-    console.log("paso por aca");
+    console.log("🚀 ~ file: auth.controller.js:25 ~ login ~ error:", error);
     res.status(404).json(error);
   }
 };
