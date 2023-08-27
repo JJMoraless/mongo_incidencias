@@ -1,8 +1,10 @@
-
 import express from "express";
 import morgan from "morgan";
 import { router } from "./routes/index.js";
 import cookieParser from "cookie-parser";
+import "./utils/auth/index.js";
+
+
 const app = express();
 
 // midlewares
