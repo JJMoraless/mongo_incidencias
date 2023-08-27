@@ -187,11 +187,14 @@ await db.createCollection("users", {
           bsonType: "string",
           description: "Debe ser una cadena y es obligatorio.",
         },
+        role: {
+          bsonType: "string",
+          description: "Debe ser una cadena y es obligatorio.",
+        },
       },
     },
   },
 });
 
 import db from "./config.js";
-const User = db.collection("users");
-User.createIndex({ email: 1 }, { unique: true });
+db.collection("users").createIndex({ email: 1 }, { unique: true });
