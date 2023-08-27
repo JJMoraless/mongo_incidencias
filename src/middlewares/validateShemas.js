@@ -9,7 +9,12 @@ export const validatorHandler = (schema, property) => {
       next();
     } catch (error) {
       console.log("🚀 ~ file: validateShemas.js:11 ~ return ~ error:", error);
-      return res.status(400).json({ errors: error });
+      return res.status(400).json({
+        errors: error.details.map(({ message, path: [path] }) => ({
+          message,
+          path,
+        })),
+      });
     }
   };
 };
